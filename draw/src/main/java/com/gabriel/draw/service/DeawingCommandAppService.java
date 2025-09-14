@@ -1,6 +1,8 @@
 package com.gabriel.draw.service;
 
 import com.gabriel.draw.command.AddShapeCommand;
+import com.gabriel.draw.command.SetDrawModeCommand;
+import com.gabriel.draw.view.DrawingToolBar;
 import com.gabriel.drawfx.DrawMode;
 import com.gabriel.drawfx.ShapeMode;
 import com.gabriel.drawfx.command.Command;
@@ -13,20 +15,24 @@ import java.awt.*;
 
 public class DeawingCommandAppService implements AppService {
     public AppService appService;
-    public DeawingCommandAppService(AppService appService){
+    private DrawingToolBar toolBar;
+    public DeawingCommandAppService(AppService appService, DrawingToolBar toolBar){
         this.appService = appService;
-
+        this.toolBar = toolBar;
+        updateButtons();
     }
 
     @Override
     public void undo() {
-        CommandService.undo();;
+        CommandService.undo();
+        updateButtons();
         appService.repaint();
     }
 
     @Override
     public void redo() {
         CommandService.redo();
+        updateButtons();
         appService.repaint();
     }
 
@@ -47,7 +53,8 @@ public class DeawingCommandAppService implements AppService {
 
     @Override
     public void setDrawMode(DrawMode drawMode) {
-        appService.setDrawMode(drawMode);
+        Command command = new SetDrawModeCommand(appService, drawMode);
+        CommandService.ExecuteCommand(command);
     }
 
     @Override
@@ -84,6 +91,7 @@ public class DeawingCommandAppService implements AppService {
     public void create(Shape shape) {
         Command command = new AddShapeCommand(appService, shape);
         CommandService.ExecuteCommand(command);
+        updateButtons();
     }
 
     @Override
@@ -114,5 +122,10 @@ public class DeawingCommandAppService implements AppService {
     @Override
     public void repaint() {
         appService.repaint();
+    }
+
+    public void updateButtons() {
+        toolBar.getUndoButton().setEnabled(CommandService.canUndo());
+        toolBar.getRedoButton().setEnabled(CommandService.canRedo());
     }
 }

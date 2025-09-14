@@ -25,4 +25,13 @@ public class CommandService {
         command.execute();
         undoStack.push(command);
     }
+
+    public static boolean canUndo() {
+        return !undoStack.empty();
+    }
+
+    public static boolean canRedo() {
+        return !redoStack.empty();
+    }
+
 }
