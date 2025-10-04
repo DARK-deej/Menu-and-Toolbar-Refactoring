@@ -17,15 +17,15 @@ import java.awt.geom.Ellipse2D;
 public class DrawingController  implements MouseListener, MouseMotionListener {
     private Point end;
     final private DrawingView drawingView;
-
-    Shape currentShape;
+    private Shape currentShape;
     private final AppService appService;
-     public DrawingController(AppService appService, DrawingView drawingView){
-       this.appService = appService;
-         this.drawingView = drawingView;
-         drawingView.addMouseListener(this);
-         drawingView.addMouseMotionListener(this);
-     }
+
+    public DrawingController(AppService appService, DrawingView drawingView){
+        this.appService = appService;
+        this.drawingView = drawingView;
+        drawingView.addMouseListener(this);
+        drawingView.addMouseMotionListener(this);
+    }
     @Override
     public void mouseClicked(MouseEvent e) {
 
@@ -57,21 +57,19 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
                 default:
                     return;
             }
-
-
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-         if(appService.getDrawMode() == DrawMode.MousePressed){
-             end = e.getPoint();
-             currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
-             appService.scale(currentShape,end);
-             currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
-             appService.create(currentShape);
-             appService.setDrawMode(DrawMode.Idle);
-           }
+        if(appService.getDrawMode() == DrawMode.MousePressed){
+            end = e.getPoint();
+            currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
+            appService.scale(currentShape,end);
+            currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,false );
+            appService.create(currentShape);
+            appService.setDrawMode(DrawMode.Idle);
+        }
     }
 
     @Override
@@ -87,11 +85,11 @@ public class DrawingController  implements MouseListener, MouseMotionListener {
     @Override
     public void mouseDragged(MouseEvent e) {
         if(appService.getDrawMode() == DrawMode.MousePressed) {
-                end = e.getPoint();
-                currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
-                appService.scale(currentShape,end);
-                currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
-           }
+            end = e.getPoint();
+            currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
+            appService.scale(currentShape,end);
+            currentShape.getRendererService().render(drawingView.getGraphics(), currentShape,true );
+        }
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.gabriel.drawfx.service.AppService;
 import javax.swing.*;
 
 public class DrawingFrame extends JFrame {
-
+    private DrawingView drawingView;
 
     public DrawingFrame(AppService appService){
         DrawingWindowController drawingWindowController = new DrawingWindowController(appService);
@@ -14,7 +14,10 @@ public class DrawingFrame extends JFrame {
         this.addWindowFocusListener(drawingWindowController);
         this.addWindowStateListener(drawingWindowController);
 
-        DrawingView drawingView = new DrawingView(appService);
+        this.drawingView = new DrawingView(appService); //changed
         this.getContentPane().add(drawingView);
+    }
+    public DrawingView getDrawingView(){
+        return this.drawingView;
     }
 }

@@ -14,23 +14,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         AppService drawingAppService = new DrawingAppService();
+        DeawingCommandAppService appService = new DeawingCommandAppService(drawingAppService);
 
-        ActionController actionController = new ActionController(drawingAppService);
-        DrawingToolBar drawingToolBar = new DrawingToolBar(actionController);
-        AppService appService = new DeawingCommandAppService(drawingAppService, drawingToolBar);
-        actionController.setAppService(appService);
         DrawingFrame drawingFrame = new DrawingFrame(appService);
-        DrawingMenuBar drawingMenuBar = new DrawingMenuBar(actionController);
+        ActionListener actionListener = new ActionController(appService);
+        DrawingMenuBar drawingMenuBar = new DrawingMenuBar( actionListener);
+        DrawingToolBar drawingToolBar = new DrawingToolBar(actionListener);
+        appService.setDrawingToolBar(drawingToolBar);
         DrawingView drawingView = new DrawingView(appService);
         DrawingController drawingController = new DrawingController(appService, drawingView);
         drawingView.addMouseMotionListener(drawingController);
         drawingView.addMouseListener(drawingController);
         drawingFrame.setContentPane(drawingView);
+
 
 
         drawingMenuBar.setVisible(true);

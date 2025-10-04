@@ -2,6 +2,7 @@ package com.gabriel.draw.service;
 
 import com.gabriel.draw.command.AddShapeCommand;
 import com.gabriel.draw.command.SetDrawModeCommand;
+import com.gabriel.draw.view.DrawingMenuBar;
 import com.gabriel.draw.view.DrawingToolBar;
 import com.gabriel.drawfx.DrawMode;
 import com.gabriel.drawfx.ShapeMode;
@@ -15,25 +16,29 @@ import java.awt.*;
 
 public class DeawingCommandAppService implements AppService {
     public AppService appService;
-    private DrawingToolBar toolBar;
-    public DeawingCommandAppService(AppService appService, DrawingToolBar toolBar){
+    private DrawingToolBar drawingToolBar;
+    public DeawingCommandAppService(AppService appService){
         this.appService = appService;
-        this.toolBar = toolBar;
-        updateButtons();
+
+    }
+
+    public void setDrawingToolBar(DrawingToolBar drawingToolBar){
+        this.drawingToolBar = drawingToolBar;
+        updateToolBarButtons();
     }
 
     @Override
     public void undo() {
-        CommandService.undo();
-        updateButtons();
+        CommandService.undo();;
         appService.repaint();
+        updateToolBarButtons();
     }
 
     @Override
     public void redo() {
         CommandService.redo();
-        updateButtons();
         appService.repaint();
+        updateToolBarButtons();
     }
 
     @Override
@@ -55,6 +60,7 @@ public class DeawingCommandAppService implements AppService {
     public void setDrawMode(DrawMode drawMode) {
         Command command = new SetDrawModeCommand(appService, drawMode);
         CommandService.ExecuteCommand(command);
+        updateToolBarButtons();
     }
 
     @Override
@@ -91,7 +97,7 @@ public class DeawingCommandAppService implements AppService {
     public void create(Shape shape) {
         Command command = new AddShapeCommand(appService, shape);
         CommandService.ExecuteCommand(command);
-        updateButtons();
+        updateToolBarButtons();
     }
 
     @Override
@@ -124,8 +130,10 @@ public class DeawingCommandAppService implements AppService {
         appService.repaint();
     }
 
-    public void updateButtons() {
-        toolBar.getUndoButton().setEnabled(CommandService.canUndo());
-        toolBar.getRedoButton().setEnabled(CommandService.canRedo());
+    private void updateToolBarButtons(){
+        if(drawingToolBar != null){
+            drawingToolBar.setUndoEnabled(CommandService.canUndo());
+            drawingToolBar.setRedoButton(CommandService.canRedo());
+        }
     }
 }

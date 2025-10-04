@@ -1,46 +1,102 @@
 package com.gabriel.draw.view;
 
+import com.gabriel.draw.controller.ActionController;
 import com.gabriel.drawfx.ActionCommand;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
 public class DrawingToolBar extends JToolBar {
-    private JButton undoButton;
-    private JButton redoButton;
+    JButton undobutton;
+    JButton redoButton;
+    public DrawingToolBar(ActionListener actionListener){
 
-    public DrawingToolBar(ActionListener actionListener) {
-        this.undoButton = createButton("Undo", "com/gabriel/draw/view/images/undo.png", ActionCommand.UNDO, actionListener);
-        add(this.undoButton);
+        undobutton = new JButton();
 
-        this.redoButton = createButton("Redo", "com/gabriel/draw/view/images/redo.png", ActionCommand.REDO, actionListener);
-        add(this.redoButton);
-        addSeparator();
-        add(createButton("Line", "com/gabriel/draw/view/images/line.png", ActionCommand.LINE, actionListener));
-        add(createButton("Rectangle", "com/gabriel/draw/view/images/rectangle.png", ActionCommand.RECT, actionListener));
-        add(createButton("Ellipse", "com/gabriel/draw/view/images/ellipse.png", ActionCommand.ELLIPSE, actionListener));
-        addSeparator();
-        add(createButton("Color", "com/gabriel/draw/view/images/color.png", ActionCommand.COLOR, actionListener));
+        String imgLocation = "images/"
+                + "undo"
+                +".png";
+        URL imageURL = DrawingToolBar.class.getResource(imgLocation);
+
+        undobutton.setActionCommand(ActionCommand.UNDO);
+        undobutton.setToolTipText("Undo");
+        undobutton.addActionListener(actionListener);
+        undobutton.setIcon(new ImageIcon(imageURL, "Undo"));
+        undobutton.setEnabled(false);
+        add(undobutton);
+
+        redoButton = new JButton();
+
+        imgLocation = "images/"
+                + "redo"
+                +".png";
+        imageURL = DrawingToolBar.class.getResource(imgLocation);
+
+        redoButton.setActionCommand(ActionCommand.REDO);
+        redoButton.setToolTipText("Redo");
+        redoButton.addActionListener(actionListener);
+        redoButton.setIcon(new ImageIcon(imageURL, "Redo"));
+        redoButton.setEnabled(false);
+        add(redoButton);
+
+        JButton button = new JButton();
+
+        imgLocation = "images/"
+                + "ellipse"
+                +".png";
+        imageURL = DrawingToolBar.class.getResource(imgLocation);
+
+        button.setActionCommand(ActionCommand.ELLIPSE);
+        button.setToolTipText("Ellipse");
+        button.addActionListener(actionListener);
+        button.setIcon(new ImageIcon(imageURL, "Ellipse"));
+        add(button);
+
+        button = new JButton();
+
+        imgLocation = "images/"
+                + "line"
+                +".png";
+        imageURL = DrawingToolBar.class.getResource(imgLocation);
+
+        button.setActionCommand(ActionCommand.LINE);
+        button.setToolTipText("Line");
+        button.addActionListener(actionListener);
+        button.setIcon(new ImageIcon(imageURL, "Line"));
+        add(button);
+
+        button = new JButton();
+
+        imgLocation = "images/"
+                + "rectangle"
+                +".png";
+        imageURL = DrawingToolBar.class.getResource(imgLocation);
+
+        button.setActionCommand(ActionCommand.RECT);
+        button.setToolTipText("Rectangle");
+        button.addActionListener(actionListener);
+        button.setIcon(new ImageIcon(imageURL, "Rectangle"));
+        add(button);
+
+        button = new JButton();
+
+        imgLocation = "images/"
+                + "color"
+                +".png";
+        imageURL = DrawingToolBar.class.getResource(imgLocation);
+
+        button.setActionCommand(ActionCommand.COLOR);
+        button.setToolTipText("Set Color");
+        button.addActionListener(actionListener);
+        button.setIcon(new ImageIcon(imageURL, "Set Color"));
+        add(button);
+
     }
-
-    private JButton createButton(String toolTip, String imagePath, String actionCommand, ActionListener listener) {
-        URL imageUrl = getClass().getClassLoader().getResource(imagePath);
-        ImageIcon icon = new ImageIcon(imageUrl);
-        JButton button = new JButton(icon);
-        button.setActionCommand(actionCommand);
-        button.setToolTipText(toolTip);
-        button.addActionListener(listener);
-        return button;
+    public void setUndoEnabled(boolean enabled){
+        undobutton.setEnabled(enabled);
     }
-
-    public JButton getUndoButton() {
-        return undoButton;
-    }
-
-    public JButton getRedoButton() {
-        return redoButton;
+    public void setRedoButton(boolean enabled){
+        redoButton.setEnabled(enabled);
     }
 }

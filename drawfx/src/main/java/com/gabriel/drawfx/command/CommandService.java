@@ -5,9 +5,18 @@ public class CommandService {
     static Stack<Command> undoStack = new Stack<Command>();
     static Stack<Command> redoStack = new Stack<Command>();
 
+    public static boolean canUndo() {
+        return !undoStack.empty();
+    }
+    public static boolean canRedo() {
+        return !redoStack.empty();
+    }
+
+
     public static void ExecuteCommand(Command command) {
         command.execute();
         undoStack.push(command);
+        redoStack.clear();
     }
 
     public static void undo() {
@@ -22,16 +31,7 @@ public class CommandService {
         if (redoStack.empty())
             return;
         Command command = redoStack.pop();
-        command.execute();
+        command.redo();
         undoStack.push(command);
     }
-
-    public static boolean canUndo() {
-        return !undoStack.empty();
-    }
-
-    public static boolean canRedo() {
-        return !redoStack.empty();
-    }
-
 }

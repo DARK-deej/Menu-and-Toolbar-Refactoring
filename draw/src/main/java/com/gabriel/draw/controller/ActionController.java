@@ -4,11 +4,10 @@ import com.gabriel.drawfx.ActionCommand;
 import com.gabriel.drawfx.ShapeMode;
 import com.gabriel.drawfx.command.CommandService;
 import com.gabriel.drawfx.service.AppService;
-import lombok.Setter;
 
 import javax.swing.*;
-        import java.awt.*;
-        import java.awt.event.ActionEvent;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ActionController implements ActionListener {
@@ -18,26 +17,27 @@ public class ActionController implements ActionListener {
         this.appService = appService;
     }
 
-    public void setAppService(AppService appService) {
-        this.appService = appService;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         String  cmd = e.getActionCommand();
-        if (ActionCommand.UNDO.equals(cmd)) {
+        if(ActionCommand.UNDO.equals(cmd) ){
             appService.undo();
-        } else if (ActionCommand.REDO.equals(cmd)) {
+        }
+        if(ActionCommand.REDO.equals(cmd)){
             appService.redo();
-        } else if (ActionCommand.LINE.equals(cmd)) {
+        }
+        if(ActionCommand.LINE.equals(cmd)){
             appService.setShapeMode(ShapeMode.Line);
-        } else if (ActionCommand.RECT.equals(cmd)) {
-            appService.setShapeMode(ShapeMode.Rectangle);
-        } else if (ActionCommand.ELLIPSE.equals(cmd)) {
+        }
+        if(ActionCommand.ELLIPSE.equals(cmd)){
             appService.setShapeMode(ShapeMode.Ellipse);
-        } else if (ActionCommand.COLOR.equals(cmd)) {
-            Color selectedColor = JColorChooser.showDialog(null, "Choose a Color", Color.WHITE);
-            appService.setColor(selectedColor);
+        }
+        if(ActionCommand.RECT.equals(cmd)){
+            appService.setShapeMode(ShapeMode.Rectangle);
+        }
+        if(ActionCommand.COLOR.equals(cmd)){
+            Color color = JColorChooser.showDialog(null, "Choose a color", appService.getColor());
+            appService.setColor(color);
         }
     }
 }
